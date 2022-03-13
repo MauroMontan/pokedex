@@ -1,66 +1,8 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import searchBar from "./components/toolbar.vue";
-import { usePokemonStore } from "./store";
-
-const store = usePokemonStore();
-
-const { currentPokemon } = storeToRefs(store);
+import pokemonInfo from "./pages/pokemon_info.vue";
 </script>
-
 <template>
-  <header>
-    <img
-      src="https://cdn-icons-png.flaticon.com/512/287/287221.png"
-      alt="pokeball icon"
-    />
-    <h3>POKEDEX</h3>
-    <searchBar />
-  </header>
-
-  <div class="toolbar">
-    <h4>stats:</h4>
-    <div class="stats">
-      <table>
-        <tr>
-          <th v-for="stat in currentPokemon.stats">
-            {{ stat.stat.name }}
-          </th>
-        </tr>
-        <tr>
-          <td v-for="stat in currentPokemon.stats">{{ stat.base_stat }}</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="image-container">
-    <h2>{{ currentPokemon.name }}</h2>
-    <img :src="currentPokemon.sprite" alt="pokemon picture" />
-  </div>
-
-  <main class="content">
-    <h2>About {{ currentPokemon.name }}</h2>
-
-    <div class="about">
-      <h4>Species: {{ currentPokemon.species }}</h4>
-      <h4>Xp base: {{ currentPokemon.base_experience }}</h4>
-      <h4>height: {{ currentPokemon.height }}</h4>
-
-      <h4>weight: {{ currentPokemon.weight }}</h4>
-    </div>
-
-    <div class="types">
-      <h4>types:</h4>
-      <ul>
-        <li v-for="type in currentPokemon.types">{{ type.type.name }}</li>
-      </ul>
-    </div>
-  </main>
-
-  <footer>
-    <footer><i class="fa-brands fa-github"></i> MauroMotan</footer>
-  </footer>
+  <pokemonInfo />
 </template>
 
 <style>
@@ -92,7 +34,7 @@ body {
   grid-template-rows: repeat(3, auto);
   grid-template-areas:
     "header header header header"
-    "image-container image-container toolbar toolbar"
+    "image-container image-container table table"
     "image-container  image-container content content"
     "footer footer footer footer";
 }
@@ -114,8 +56,8 @@ body {
   padding: 0.5rem;
 }
 
-#app .toolbar {
-  grid-area: toolbar;
+#app .table {
+  grid-area: table;
   display: flex;
   height: 100%;
   margin: auto;
@@ -142,8 +84,22 @@ body {
   color: #464646;
 }
 
+@keyframes changewidth {
+  from {
+    transform: translateY(-10px);
+  }
+
+  to {
+    transform: translateY(10px);
+  }
+}
+
 #app .image-container img {
   width: 60%;
+  animation-duration: 0.8s;
+  animation-name: changewidth;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 #app main {
@@ -157,7 +113,7 @@ body {
   justify-content: space-around;
   padding: 1.3rem;
 }
-#app .toolbar .stats {
+#app .table .stats {
   display: flex;
   margin: auto;
   border-radius: 10px;
@@ -178,18 +134,18 @@ body {
   padding: 0.5rem;
 }
 
-#app .toolbar .stats table {
+#app .table .stats table {
   border-collapse: collapse;
 }
 
-#app .toolbar .stats table th {
+#app .table .stats table th {
   border: solid 1px rgb(0, 0, 0, 0.2);
   font-size: 0.8rem;
   text-align: center;
   padding: 0.4rem;
 }
 
-#app .toolbar .stats table td {
+#app .table .stats table td {
   border: solid 1px rgb(0, 0, 0, 0.2);
   padding: 0.4rem;
   text-align: center;
@@ -228,7 +184,7 @@ body {
     grid-template-areas:
       "header header header header"
       "image-container image-container image-container image-container"
-      "toolbar toolbar toolbar toolbar"
+      "table table table table"
       "content content content content"
       "footer footer footer footer";
   }
@@ -239,7 +195,7 @@ body {
     flex-direction: column;
   }
 
-  #app .toolbar {
+  #app .table {
     flex-direction: column;
     text-align: left;
   }
@@ -248,7 +204,7 @@ body {
     font-size: 1rem;
     color: #f0dba5;
   }
-  #app .toolbar .stats {
+  #app .table .stats {
     overflow-x: auto;
 
     max-width: 100%;

@@ -7,8 +7,7 @@ const store = usePokemonStore();
 const search = ref("");
 
 const findPokemon = () => {
-  store.getPokemon(search.value);
-  console.log(store.currentPokemon);
+  store.getPokemon(search.value.toLowerCase());
 };
 </script>
 
